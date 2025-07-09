@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="sv">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Inloggningssystem</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="container">
+        <!-- Inloggningsformulär -->
+        <div id="loginForm" class="form-container">
+            <h2>Logga in</h2>
+            <form id="login">
+                <div class="form-group">
+                    <label for="loginUsername">Användarnamn:</label>
+                    <input type="text" id="loginUsername" name="username" required>
+                    <small>Format: namn123 (bokstäver + 3 siffror)</small>
+                </div>
+                <div class="form-group">
+                    <label for="loginPassword">Lösenord:</label>
+                    <input type="password" id="loginPassword" name="password" required>
+                </div>
+                <button type="submit" class="btn btn-primary">Logga in</button>
+            </form>
+            <p class="switch-form">
+                Har du inget konto? 
+                <a href="#" onclick="showRegisterForm()">Skapa konto</a>
+            </p>
+        </div>
+
+        <!-- Registreringsformulär -->
+        <div id="registerForm" class="form-container" style="display: none;">
+            <h2>Skapa konto</h2>
+            <form id="register">
+                <div class="form-group">
+                    <label for="firstName">Förnamn:</label>
+                    <input type="text" id="firstName" name="first_name" required>
+                </div>
+                <div class="form-group">
+                    <label for="lastName">Efternamn:</label>
+                    <input type="text" id="lastName" name="last_name" required>
+                </div>
+                <div class="form-group">
+                    <label for="regUsername">Användarnamn:</label>
+                    <input type="text" id="regUsername" name="username" required>
+                    <small>Format: namn123 (bokstäver + 3 siffror)</small>
+                </div>
+                <div class="form-group">
+                    <label for="regPassword">Lösenord:</label>
+                    <input type="password" id="regPassword" name="password" required>
+                    <small>Minst 4 tecken med bokstäver, siffror och specialtecken</small>
+                </div>
+                <div class="form-group">
+                    <label for="address">Adress:</label>
+                    <input type="text" id="address" name="address" required>
+                </div>
+                <div class="form-group">
+                    <label for="age">Ålder:</label>
+                    <input type="number" id="age" name="age" min="18" required>
+                    <small>Minst 18 år</small>
+                </div>
+                <div class="form-group">
+                    <label for="description">Beskriv dig själv (valfritt):</label>
+                    <textarea id="description" name="description" rows="4"></textarea>
+                </div>
+                <button type="submit" class="btn btn-primary">Skapa konto</button>
+            </form>
+            <p class="switch-form">
+                Har du redan ett konto? 
+                <a href="#" onclick="showLoginForm()">Logga in</a>
+            </p>
+        </div>
+
+        <!-- Mina sidor -->
+        <div id="myPages" class="content-container" style="display: none;">
+            <h1>MINA SIDOR</h1>
+            <div id="userInfo" class="user-info"></div>
+            <button onclick="logout()" class="btn btn-danger">Logga ut</button>
+        </div>
+
+        <!-- Felmeddelanden -->
+        <div id="errorMessage" class="error-message"></div>
+        
+        <!-- Framgångsmeddelanden -->
+        <div id="successMessage" class="success-message"></div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
