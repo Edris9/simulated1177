@@ -108,5 +108,5 @@ REST_FRAMEWORK = {
     ],
 }
 
-# Lägg till denna rad:
+# CSRF settings
 CSRF_COOKIE_HTTPONLY = False
