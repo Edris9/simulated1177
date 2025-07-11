@@ -4,9 +4,15 @@ from rest_framework.response import Response
 from django.contrib.auth import authenticate, login, logout
 from .models import User
 from .serializers import UserRegistrationSerializer, UserLoginSerializer, UserSerializer
+from django.views.decorators.csrf import csrf_exempt
 
 
-    
+@api_view(['POST'])
+@csrf_exempt  # LÄGG TILL DENNA RAD
+def logout_view(request):
+    logout(request)
+    return Response({'message': 'Utloggning lyckades'}, status=status.HTTP_200_OK)
+
 
 @api_view(['POST'])
 def register_view(request):

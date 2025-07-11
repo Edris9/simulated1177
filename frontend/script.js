@@ -188,3 +188,8 @@ window.addEventListener('DOMContentLoaded', async () => {
         showLoginForm();
     }
 });
+
+
+function logout() {
+    window.location.href = '/';  // Bara ladda om sidan
+}

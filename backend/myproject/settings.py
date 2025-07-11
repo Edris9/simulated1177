@@ -108,4 +108,5 @@ REST_FRAMEWORK = {
     ],
 }
 
-AUTH_USER_MODEL = 'accounts.User'
+# Lägg till denna rad:
+CSRF_COOKIE_HTTPONLY = False
