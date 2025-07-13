@@ -3,14 +3,16 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Inloggningssystem</title>
+    <title>AI-SSK Vårdcentral</title>
     <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
 </head>
 <body>
+    <!-- Inloggning och registrering (centrerad) -->
     <div class="container">
         <!-- Inloggningsformulär -->
         <div id="loginForm" class="form-container">
-            <h2>Logga in</h2>
+            <h2>Logga in - AI-SSK Vårdcentral</h2>
             <form id="login">
                 <div class="form-group">
                     <label for="loginUsername">Användarnamn:</label>
@@ -31,7 +33,7 @@
 
         <!-- Registreringsformulär -->
         <div id="registerForm" class="form-container" style="display: none;">
-            <h2>Skapa konto</h2>
+            <h2>Skapa konto - AI-SSK</h2>
             <form id="register">
                 <div class="form-group">
                     <label for="firstName">Förnamn:</label>
@@ -72,18 +74,123 @@
             </p>
         </div>
 
-        <!-- Mina sidor -->
-        <div id="myPages" class="content-container" style="display: none;">
-            <h1>MINA SIDOR</h1>
-            <div id="userInfo" class="user-info"></div>
-            <button onclick="logout()" class="btn btn-danger">Logga ut</button>
-        </div>
-
         <!-- Felmeddelanden -->
         <div id="errorMessage" class="error-message"></div>
         
         <!-- Framgångsmeddelanden -->
         <div id="successMessage" class="success-message"></div>
+    </div>
+
+    <!-- Huvuddashboard (fyra kontainrar i grid) -->
+    <div id="dashboardWrapper" class="dashboard-wrapper" style="display: none;">
+        <!-- Header med användarinfo -->
+        <div class="dashboard-header">
+            <div class="user-header">
+                <div class="user-avatar">
+                    <i class="fas fa-user-circle"></i>
+                </div>
+                <div class="user-header-info">
+                    <h2>MINA SIDOR</h2>
+                    <div id="headerUserInfo"></div>
+                </div>
+                <button onclick="logout()" class="btn btn-danger logout-btn">
+                    <i class="fas fa-sign-out-alt"></i> Logga ut
+                </button>
+            </div>
+        </div>
+
+        <!-- Grid med fyra kontainrar -->
+        <div class="dashboard-grid">
+            <!-- AI Assistant kontainer -->
+            <div class="dashboard-card ai-card">
+                <div class="card-header">
+                    <h3><i class="fas fa-robot"></i> AI-SSK Assistant</h3>
+                </div>
+                <div class="card-content">
+                    <div class="ai-status">
+                        <p><i class="fas fa-circle status-online"></i> AI-SSK är tillgänglig</p>
+                        <p><strong>Specialitet:</strong> Sjuksköterska rådgivning</p>
+                        <p><strong>Tillgänglighet:</strong> 24/7</p>
+                    </div>
+                    <button onclick="callAISSK('main')" class="btn btn-primary btn-call">
+                        <i class="fas fa-phone"></i> Ring till AI-SSK
+                    </button>
+                </div>
+            </div>
+
+            <!-- Kalender kontainer -->
+            <div class="dashboard-card calendar-card">
+                <div class="card-header">
+                    <h3><i class="fas fa-calendar-alt"></i> Kalender</h3>
+                </div>
+                <div class="card-content">
+                    <div class="calendar-view">
+                        <div class="calendar-month">
+                            <h4 id="currentMonth"></h4>
+                        </div>
+                        <div class="calendar-grid" id="calendarGrid">
+                            <!-- Kalenderdagar genereras med JavaScript -->
+                        </div>
+                        <div class="upcoming-appointments">
+                            <h5>Kommande tider:</h5>
+                            <div id="appointmentsList">
+                                <p class="no-appointments">Inga bokade tider</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Status kontainer -->
+            <div class="dashboard-card status-card">
+                <div class="card-header">
+                    <h3><i class="fas fa-heartbeat"></i> Status</h3>
+                </div>
+                <div class="card-content">
+                    <div class="status-section">
+                        <div class="status-item">
+                            <h5><i class="fas fa-clipboard-list"></i> Sammanfattning</h5>
+                            <div id="statusSummary" class="status-content">
+                                <p>Ingen aktuell sammanfattning tillgänglig.</p>
+                                <p><em>Ring AI-SSK för att uppdatera din status.</em></p>
+                            </div>
+                        </div>
+                        <div class="status-item">
+                            <h5><i class="fas fa-exclamation-triangle"></i> Anledning</h5>
+                            <div id="statusReason" class="status-content">
+                                <p>Ingen anledning registrerad.</p>
+                                <p><em>Kontakta AI-SSK för bedömning.</em></p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+        </div>
+    </div>
+
+    <!-- Modal för AI-samtal -->
+    <div id="aiCallModal" class="modal" style="display: none;">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3><i class="fas fa-phone"></i> Ansluter till AI-SSK...</h3>
+                <span class="modal-close" onclick="endCall()">&times;</span>
+            </div>
+            <div class="modal-body">
+                <div class="call-animation">
+                    <div class="call-pulse"></div>
+                    <i class="fas fa-robot call-icon"></i>
+                </div>
+                <p id="callStatus">Ringer AI-SSK...</p>
+                <div class="call-info">
+                    <p><strong>AI-SSK</strong> - Sjuksköterska Assistant</p>
+                    <p>Specialiserad på symptombedömning och tidsbokning</p>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button onclick="endCall()" class="btn btn-danger">
+                    <i class="fas fa-phone-slash"></i> Avsluta samtal
+                </button>
+            </div>
+        </div>
     </div>
 
     <script src="script.js"></script>

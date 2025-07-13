@@ -110,3 +110,28 @@ REST_FRAMEWORK = {
 
 # CSRF settings
 CSRF_COOKIE_HTTPONLY = False
+
+
+# Lägg till ALLA dessa samtidigt:
+SESSION_ENGINE = 'django.contrib.sessions.backends.db'
+SESSION_COOKIE_NAME = 'sessionid'
+SESSION_COOKIE_AGE = 86400
+SESSION_COOKIE_DOMAIN = None
+SESSION_COOKIE_SECURE = False
+SESSION_COOKIE_PATH = '/'
+SESSION_COOKIE_HTTPONLY = False  # Viktigt!
+SESSION_COOKIE_SAMESITE = 'Lax'
+
+# Och denna:
+CSRF_USE_SESSIONS = True
+# CORS med credentials
+CORS_ALLOW_CREDENTIALS = True
+CORS_ALLOWED_ORIGINS = [
+    "http://localhost",
+    "http://localhost:80",
+]
+
+# Trust the proxy
+USE_X_FORWARDED_HOST = True
+SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
+

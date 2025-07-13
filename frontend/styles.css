@@ -8,24 +8,32 @@
 
 body {
     font-family: 'Roboto', sans-serif;
-    background-color: #f5f5f5;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
     min-height: 100vh;
+    color: #333;
+}
+
+/* Inloggningssida - centrerad layout */
+body:has(.container:not([style*="display: none"])) {
     display: flex;
     align-items: center;
     justify-content: center;
+    padding: 20px;
 }
 
+/* Enkel container för inloggning/registrering */
 .container {
     width: 100%;
-    max-width: 400px;
+    max-width: 500px;
     padding: 20px;
 }
 
 .form-container, .content-container {
     background: white;
     padding: 30px;
-    border-radius: 10px;
-    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    border-radius: 15px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+    backdrop-filter: blur(10px);
 }
 
 h1, h2 {
@@ -50,11 +58,11 @@ input[type="password"],
 input[type="number"],
 textarea {
     width: 100%;
-    padding: 10px;
-    border: 1px solid #ddd;
-    border-radius: 5px;
+    padding: 12px;
+    border: 2px solid #e1e5e9;
+    border-radius: 8px;
     font-size: 14px;
-    transition: border-color 0.3s;
+    transition: all 0.3s ease;
 }
 
 input[type="text"]:focus,
@@ -62,7 +70,8 @@ input[type="password"]:focus,
 input[type="number"]:focus,
 textarea:focus {
     outline: none;
-    border-color: #4CAF50;
+    border-color: #667eea;
+    box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
 }
 
 small {
@@ -73,32 +82,54 @@ small {
 }
 
 .btn {
-    width: 100%;
-    padding: 12px;
+    padding: 12px 24px;
     border: none;
-    border-radius: 5px;
-    font-size: 16px;
+    border-radius: 8px;
+    font-size: 14px;
     font-weight: 500;
     cursor: pointer;
-    transition: background-color 0.3s;
+    transition: all 0.3s ease;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    text-decoration: none;
 }
 
 .btn-primary {
-    background-color: #4CAF50;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
     color: white;
+    width: 100%;
+    justify-content: center;
 }
 
 .btn-primary:hover {
-    background-color: #45a049;
+    transform: translateY(-2px);
+    box-shadow: 0 5px 15px rgba(102, 126, 234, 0.4);
+}
+
+.btn-secondary {
+    background: #6c757d;
+    color: white;
+}
+
+.btn-secondary:hover {
+    background: #5a6268;
 }
 
 .btn-danger {
-    background-color: #f44336;
+    background: #dc3545;
     color: white;
 }
 
 .btn-danger:hover {
-    background-color: #da190b;
+    background: #c82333;
+}
+
+.btn-call {
+    width: 100%;
+    justify-content: center;
+    font-size: 16px;
+    padding: 15px;
 }
 
 .switch-form {
@@ -108,7 +139,7 @@ small {
 }
 
 .switch-form a {
-    color: #4CAF50;
+    color: #667eea;
     text-decoration: none;
     font-weight: 500;
 }
@@ -121,43 +152,418 @@ small {
 .success-message {
     padding: 15px;
     margin-top: 15px;
-    border-radius: 5px;
+    border-radius: 8px;
     text-align: center;
     display: none;
 }
 
 .error-message {
-    background-color: #ffebee;
-    color: #c62828;
-    border: 1px solid #ef5350;
+    background-color: #f8d7da;
+    color: #721c24;
+    border: 1px solid #f5c6cb;
 }
 
 .success-message {
-    background-color: #e8f5e9;
-    color: #2e7d32;
-    border: 1px solid #66bb6a;
+    background-color: #d4edda;
+    color: #155724;
+    border: 1px solid #c3e6cb;
 }
 
-.user-info {
-    background-color: #f9f9f9;
-    padding: 20px;
-    border-radius: 5px;
-    margin-bottom: 20px;
-    
+/* Dashboard Layout */
+.dashboard-wrapper {
+    min-height: 100vh;
+    background: #f8f9fa;
+    padding: 0;
 }
 
-.user-info h3 {
+.dashboard-header {
+    background: white;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    padding: 20px 30px;
+    margin-bottom: 30px;
+}
+
+.user-header {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    max-width: 1400px;
+    margin: 0 auto;
+}
+
+.user-avatar {
+    font-size: 3rem;
+    color: #667eea;
+}
+
+.user-header-info {
+    flex: 1;
+}
+
+.user-header-info h2 {
+    margin: 0 0 10px 0;
     color: #333;
-    margin-bottom: 10px;
+    font-size: 1.8rem;
 }
 
-.user-info p {
+#headerUserInfo {
     color: #666;
-    margin-bottom: 8px;
 }
 
-.user-info p strong {
+#headerUserInfo p {
+    margin: 5px 0;
+}
+
+.logout-btn {
+    margin-left: auto;
+}
+
+/* Dashboard Grid */
+.dashboard-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+    gap: 30px;
+    max-width: 1400px;
+    margin: 0 auto;
+    padding: 0 30px 30px;
+}
+
+.dashboard-card {
+    background: white;
+    border-radius: 15px;
+    box-shadow: 0 5px 20px rgba(0, 0, 0, 0.1);
+    overflow: hidden;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.dashboard-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+}
+
+.card-header {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+    padding: 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.card-header h3 {
+    margin: 0;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.card-content {
+    padding: 20px;
+}
+
+/* AI Assistant Card */
+.ai-card .card-content {
+    text-align: center;
+}
+
+.ai-status p {
+    margin: 10px 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+}
+
+.status-online {
+    color: #28a745;
+    animation: pulse 2s infinite;
+}
+
+@keyframes pulse {
+    0% { opacity: 1; }
+    50% { opacity: 0.5; }
+    100% { opacity: 1; }
+}
+
+/* Kalender Card */
+.calendar-view {
+    text-align: center;
+}
+
+.calendar-month h4 {
+    margin: 0 0 15px 0;
     color: #333;
+}
+
+.calendar-grid {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    gap: 5px;
+    margin-bottom: 20px;
+}
+
+.calendar-day {
+    padding: 10px 5px;
+    border: 1px solid #e9ecef;
+    border-radius: 5px;
+    font-size: 12px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.calendar-day:hover {
+    background: #f8f9fa;
+}
+
+.calendar-day.today {
+    background: #667eea;
+    color: white;
+}
+
+.calendar-day.has-appointment {
+    background: #28a745;
+    color: white;
+}
+
+.upcoming-appointments {
+    text-align: left;
+    border-top: 1px solid #e9ecef;
+    padding-top: 15px;
+}
+
+.upcoming-appointments h5 {
+    margin: 0 0 10px 0;
+    color: #333;
+}
+
+.no-appointments {
+    color: #666;
+    font-style: italic;
+}
+
+/* Status Card */
+.status-section {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.status-item h5 {
+    margin: 0 0 10px 0;
+    color: #333;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.status-content {
+    background: #f8f9fa;
+    padding: 15px;
+    border-radius: 8px;
+    border-left: 4px solid #667eea;
+}
+
+.status-content p {
+    margin: 5px 0;
+    color: #666;
+}
+
+/* Chat Card */
+.chat-status {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 12px;
+}
+
+.status-indicator {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: #dc3545;
+}
+
+.status-indicator.online {
+    background: #28a745;
+}
+
+.status-indicator.offline {
+    background: #6c757d;
+}
+
+.chat-window {
+    height: 300px;
+    display: flex;
+    flex-direction: column;
+}
+
+.chat-messages {
+    flex: 1;
+    overflow-y: auto;
+    border: 1px solid #e9ecef;
+    border-radius: 8px;
+    padding: 15px;
+    margin-bottom: 15px;
+    background: #f8f9fa;
+}
+
+.chat-message {
+    margin: 10px 0;
+    padding: 10px;
+    border-radius: 8px;
+    max-width: 80%;
+}
+
+.chat-message.system {
+    background: #e3f2fd;
+    color: #1976d2;
+    margin: 0 auto;
+    text-align: center;
+    max-width: 100%;
+}
+
+.chat-message.user {
+    background: #667eea;
+    color: white;
+    margin-left: auto;
+}
+
+.chat-message.ai {
+    background: white;
+    border: 1px solid #e9ecef;
+    margin-right: auto;
+}
+
+.chat-input-group {
+    display: flex;
+    gap: 10px;
+}
+
+.chat-input-group input {
+    flex: 1;
+}
+
+/* Modal */
+.modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.7);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 1000;
+}
+
+.modal-content {
+    background: white;
+    border-radius: 15px;
+    width: 90%;
+    max-width: 500px;
+    overflow: hidden;
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+}
+
+.modal-header {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+    padding: 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.modal-close {
+    font-size: 24px;
+    cursor: pointer;
+    line-height: 1;
+}
+
+.modal-body {
+    padding: 30px;
+    text-align: center;
+}
+
+.call-animation {
+    position: relative;
+    display: inline-block;
+    margin: 20px 0;
+}
+
+.call-pulse {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 120px;
+    height: 120px;
+    border: 3px solid #667eea;
+    border-radius: 50%;
+    animation: pulse-ring 2s infinite;
+}
+
+.call-icon {
+    font-size: 3rem;
+    color: #667eea;
+    z-index: 2;
+    position: relative;
+}
+
+@keyframes pulse-ring {
+    0% {
+        transform: translate(-50%, -50%) scale(0.8);
+        opacity: 1;
+    }
+    100% {
+        transform: translate(-50%, -50%) scale(1.2);
+        opacity: 0;
+    }
+}
+
+.call-info {
+    margin: 20px 0;
+    color: #666;
+}
+
+.modal-footer {
+    padding: 20px;
+    text-align: center;
+}
+
+/* Responsiv design */
+@media (max-width: 768px) {
+    .dashboard-grid {
+        grid-template-columns: 1fr;
+        padding: 0 15px 15px;
+        gap: 20px;
+    }
+    
+    .dashboard-header {
+        padding: 15px;
+    }
+    
+    .user-header {
+        flex-direction: column;
+        gap: 15px;
+        text-align: center;
+    }
+    
+    .user-avatar {
+        font-size: 2rem;
+    }
+    
+    .card-header {
+        flex-direction: column;
+        gap: 10px;
+        text-align: center;
+    }
+    
+    .modal-content {
+        width: 95%;
+        margin: 0 auto;
+    }
 }
 
 @media (max-width: 480px) {
@@ -168,5 +574,13 @@ small {
     .form-container,
     .content-container {
         padding: 20px;
+    }
+    
+    .dashboard-header {
+        padding: 10px;
+    }
+    
+    .card-content {
+        padding: 15px;
     }
 }

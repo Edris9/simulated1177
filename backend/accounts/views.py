@@ -5,10 +5,41 @@ from django.contrib.auth import authenticate, login, logout
 from .models import User
 from .serializers import UserRegistrationSerializer, UserLoginSerializer, UserSerializer
 from django.views.decorators.csrf import csrf_exempt
+from django.contrib.auth import authenticate, login as django_login
+
+
+
+
+
 
 
 @api_view(['POST'])
-@csrf_exempt  # LÄGG TILL DENNA RAD
+def login_view(request):
+    serializer = UserLoginSerializer(data=request.data)
+    if serializer.is_valid():
+        username = serializer.validated_data['username']
+        password = serializer.validated_data['password']
+        
+        user = authenticate(request, username=username, password=password)
+        if user:
+            login(request, user)
+            request.session.save()  # LÄGG TILL DENNA RAD!
+            request.session.modified = True  # OCH DENNA!
+            return Response({
+                'message': 'Inloggning lyckades',
+                'user': UserSerializer(user).data
+            }, status=status.HTTP_200_OK)
+
+
+@api_view(['GET'])
+def user_profile_view(request):
+    print(f"Session key: {request.session.session_key}")
+    print(f"User authenticated: {request.user.is_authenticated}")
+    print(f"User: {request.user}")
+    
+
+@api_view(['POST'])
+@csrf_exempt  
 def logout_view(request):
     logout(request)
     return Response({'message': 'Utloggning lyckades'}, status=status.HTTP_200_OK)

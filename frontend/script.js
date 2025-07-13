@@ -1,10 +1,15 @@
 const API_BASE_URL = '/api';
 
+// Global variabel för nuvarande användare
+let currentUser = null;
+let currentCallContext = null;
+
 // Visa registreringsformulär
 function showRegisterForm() {
     document.getElementById('loginForm').style.display = 'none';
     document.getElementById('registerForm').style.display = 'block';
-    document.getElementById('myPages').style.display = 'none';
+    document.querySelector('.container').style.display = 'flex';
+    document.getElementById('dashboardWrapper').style.display = 'none';
     clearMessages();
 }
 
@@ -12,26 +17,163 @@ function showRegisterForm() {
 function showLoginForm() {
     document.getElementById('loginForm').style.display = 'block';
     document.getElementById('registerForm').style.display = 'none';
-    document.getElementById('myPages').style.display = 'none';
+    document.querySelector('.container').style.display = 'flex';
+    document.getElementById('dashboardWrapper').style.display = 'none';
     clearMessages();
 }
 
-// Visa mina sidor
-function showMyPages(userData) {
-    document.getElementById('loginForm').style.display = 'none';
-    document.getElementById('registerForm').style.display = 'none';
-    document.getElementById('myPages').style.display = 'block';
+// Visa dashboard med alla kontainrar
+function showDashboard(userData) {
+    currentUser = userData;
+    document.querySelector('.container').style.display = 'none';
+    document.getElementById('dashboardWrapper').style.display = 'block';
     
-    // Visa användarinformation
-    const userInfo = document.getElementById('userInfo');
-    userInfo.innerHTML = `
-        <h3>Välkommen ${userData.first_name} ${userData.last_name}!</h3>
-        <p><strong>Användarnamn:</strong> ${userData.username}</p>
-        <p><strong>Adress:</strong> ${userData.address}</p>
-        <p><strong>Ålder:</strong> ${userData.age} år</p>
-        ${userData.description ? `<p><strong>Om mig:</strong> ${userData.description}</p>` : ''}
+    // Uppdatera header med användarinfo
+    const headerUserInfo = document.getElementById('headerUserInfo');
+    headerUserInfo.innerHTML = `
+        <p><strong>${userData.first_name} ${userData.last_name}</strong></p>
+        <p><i class="fas fa-user"></i> ${userData.username} | <i class="fas fa-map-marker-alt"></i> ${userData.address} | <i class="fas fa-birthday-cake"></i> ${userData.age} år</p>
+        ${userData.description ? `<p><i class="fas fa-info-circle"></i> ${userData.description}</p>` : ''}
+    `;
+    
+    // Initiera kalender
+    initializeCalendar();
+    
+    // Uppdatera status (simulerad data)
+    updateStatusInfo();
+}
+
+// Initiera kalender
+function initializeCalendar() {
+    const now = new Date();
+    const monthNames = [
+        'Januari', 'Februari', 'Mars', 'April', 'Maj', 'Juni',
+        'Juli', 'Augusti', 'September', 'Oktober', 'November', 'December'
+    ];
+    
+    document.getElementById('currentMonth').textContent = 
+        `${monthNames[now.getMonth()]} ${now.getFullYear()}`;
+    
+    // Generera kalenderdagar (förenklad version)
+    const calendarGrid = document.getElementById('calendarGrid');
+    calendarGrid.innerHTML = '';
+    
+    // Lägg till veckodagar
+    const weekDays = ['Mån', 'Tis', 'Ons', 'Tor', 'Fre', 'Lör', 'Sön'];
+    weekDays.forEach(day => {
+        const dayElement = document.createElement('div');
+        dayElement.className = 'calendar-day calendar-header';
+        dayElement.textContent = day;
+        calendarGrid.appendChild(dayElement);
+    });
+    
+    // Lägg till dagar för denna månad (förenklad)
+    const daysInMonth = new Date(now.getFullYear(), now.getMonth() + 1, 0).getDate();
+    const firstDay = new Date(now.getFullYear(), now.getMonth(), 1).getDay();
+    
+    // Tomma celler för dagar före månadens start
+    for (let i = 1; i < firstDay; i++) {
+        const emptyDay = document.createElement('div');
+        emptyDay.className = 'calendar-day empty';
+        calendarGrid.appendChild(emptyDay);
+    }
+    
+    // Lägg till alla dagar i månaden
+    for (let day = 1; day <= daysInMonth; day++) {
+        const dayElement = document.createElement('div');
+        dayElement.className = 'calendar-day';
+        dayElement.textContent = day;
+        
+        // Markera dagens datum
+        if (day === now.getDate()) {
+            dayElement.classList.add('today');
+        }
+        
+        // Simulera några bokade tider
+        if (day === now.getDate() + 3 || day === now.getDate() + 7) {
+            dayElement.classList.add('has-appointment');
+            dayElement.title = 'Bokad tid';
+        }
+        
+        calendarGrid.appendChild(dayElement);
+    }
+}
+
+// Uppdatera status information
+function updateStatusInfo() {
+    const statusSummary = document.getElementById('statusSummary');
+    const statusReason = document.getElementById('statusReason');
+    
+    // Simulerad data - i verkligheten skulle detta komma från backend
+    statusSummary.innerHTML = `
+        <p><strong>Senaste kontakt:</strong> Ingen registrerad</p>
+        <p><strong>Status:</strong> Väntande på bedömning</p>
+        <p><em>Ring AI-SSK för att få en bedömning av dina symptom.</em></p>
+    `;
+    
+    statusReason.innerHTML = `
+        <p><strong>Aktuell anledning:</strong> Ej angivet</p>
+        <p><em>Beskriv dina symptom för AI-SSK för korrekt bedömning.</em></p>
     `;
 }
+
+// Ring AI-SSK funktionalitet
+function callAISSK(context) {
+    currentCallContext = context;
+    document.getElementById('aiCallModal').style.display = 'flex';
+    
+    // Uppdatera modal beroende på kontext
+    const callStatus = document.getElementById('callStatus');
+    callStatus.textContent = 'Ansluter till AI-SSK...';
+    
+    // Simulera anslutning
+    setTimeout(() => {
+        callStatus.textContent = 'Ansluten! AI-SSK är redo att hjälpa dig.';
+        setTimeout(() => {
+            callStatus.textContent = 'AI-SSK: Hej! Jag kan hjälpa dig med symptombedömning och tidsbokning. Din förfrågan har registrerats och du kommer få en bekräftelse via e-post.';
+            // Uppdatera status automatiskt
+            updateStatusAfterCall();
+        }, 2000);
+    }, 3000);
+}
+
+// Uppdatera status efter AI-samtal
+function updateStatusAfterCall() {
+    const now = new Date().toLocaleString('sv-SE');
+    
+    const statusSummary = document.getElementById('statusSummary');
+    const statusReason = document.getElementById('statusReason');
+    
+    statusSummary.innerHTML = `
+        <p><strong>Senaste kontakt:</strong> ${now}</p>
+        <p><strong>Status:</strong> Kontaktad AI-SSK</p>
+        <p><strong>Åtgärd:</strong> Tidsbokning pågår</p>
+    `;
+    
+    statusReason.innerHTML = `
+        <p><strong>Typ av kontakt:</strong> ${currentCallContext === 'calendar' ? 'Tidsbokning' : 'Hälsobedömning'}</p>
+        <p><strong>AI-bedömning:</strong> Läkarbesök rekommenderas</p>
+        <p><strong>E-post:</strong> Bekräftelse skickas till din Gmail</p>
+    `;
+}
+
+// Avsluta samtal
+function endCall() {
+    document.getElementById('aiCallModal').style.display = 'none';
+    currentCallContext = null;
+}
+
+// Hantera Enter-tangent i chat
+document.addEventListener('DOMContentLoaded', function() {
+    const chatInput = document.getElementById('chatInput');
+    if (chatInput) {
+        chatInput.addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') {
+                sendMessage();
+            }
+        });
+    }
+});
 
 // Visa felmeddelande
 function showError(message) {
@@ -83,7 +225,7 @@ document.getElementById('login').addEventListener('submit', async (e) => {
         
         if (response.ok) {
             showSuccess('Inloggning lyckades!');
-            showMyPages(data.user);
+            showDashboard(data.user);
             document.getElementById('login').reset();
         } else {
             showError(data.error || 'Inloggning misslyckades');
@@ -156,6 +298,7 @@ async function logout() {
         if (response.ok) {
             showSuccess('Du har loggat ut');
             showLoginForm();
+            endCall();
         } else {
             // Om POST inte fungerar, prova GET
             window.location.href = '/';
@@ -168,8 +311,6 @@ async function logout() {
     }
 }
 
-
-
 // Kontrollera om användaren redan är inloggad vid sidladdning
 window.addEventListener('DOMContentLoaded', async () => {
     try {
@@ -179,7 +320,7 @@ window.addEventListener('DOMContentLoaded', async () => {
         
         if (response.ok) {
             const userData = await response.json();
-            showMyPages(userData);
+            showDashboard(userData);
         } else {
             showLoginForm();
         }
@@ -188,8 +329,3 @@ window.addEventListener('DOMContentLoaded', async () => {
         showLoginForm();
     }
 });
-
-
-function logout() {
-    window.location.href = '/';  // Bara ladda om sidan
-}
