@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="sv">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI-SSK Assistant</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link rel="stylesheet" href="styles_ai_assistant.css">
+    <script src="ai_assistant.js"></script>
+    
+</head>
+<body>
+    <div class="dashboard-card ai-card">
+        <div class="card-header">
+            <h3><i class="fas fa-robot"></i> AI-SSK Assistant</h3>
+        </div>
+        <div class="card-content">
+            <div class="ai-status">
+                <p><i class="fas fa-circle status-online"></i> AI-SSK är tillgänglig</p>
+                <p><strong>Specialitet:</strong> Sjuksköterska rådgivning</p>
+                <p><strong>Tillgänglighet:</strong> 24/7</p>
+            </div>
+            
+            <!-- Huvudknappar -->
+            <div class="button-container" id="mainButtons">
+                <button onclick="startCall()" class="btn btn-primary">
+                    <i class="fas fa-phone"></i> Ring till AI-SSK
+                </button>
+                <button onclick="startChat()" class="btn btn-secondary">
+                    <i class="fas fa-comments"></i> Chatta med AI-SSK
+                </button>
+            </div>
+
+            <!-- Chatt-container -->
+            <div class="chat-container" id="chatContainer">
+                <div class="chat-messages" id="chatMessages">
+                    <div class="message">
+                        <strong>AI-SSK:</strong> Utveckling är på gång...
+                    </div>
+                </div>
+                <div class="chat-input-container">
+                    <input type="text" class="chat-input" id="chatInput" placeholder="Skriv ditt meddelande...">
+                    <button class="send-btn" onclick="sendMessage()">
+                        <i class="fas fa-paper-plane"></i>
+                    </button>
+                </div>
+                <div style="text-align: center; margin-top: 15px;">
+                    <button onclick="endChat()" class="btn btn-danger">
+                        <i class="fas fa-times"></i> Avsluta samtalet
+                    </button>
+                </div>
+            </div>
+
+            <!-- Ring-container -->
+            <div class="call-container" id="callContainer">
+                <div class="call-status">
+                    <i class="fas fa-phone-alt"></i>
+                    <h4>Ringer AI-SSK...</h4>
+                    <p>Utveckling är på gång</p>
+                </div>
+                <button onclick="endCall()" class="btn btn-danger">
+                    <i class="fas fa-phone-slash"></i> Avsluta samtalet
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        
+    </script>
+</body>
+</html>

@@ -107,14 +107,61 @@
                     <h3><i class="fas fa-robot"></i> AI-SSK Assistant</h3>
                 </div>
                 <div class="card-content">
-                    <div class="ai-status">
-                        <p><i class="fas fa-circle status-online"></i> AI-SSK är tillgänglig</p>
-                        <p><strong>Specialitet:</strong> Sjuksköterska rådgivning</p>
-                        <p><strong>Tillgänglighet:</strong> 24/7</p>
+                    <!-- Standard vy med status och knappar -->
+                    <div id="aiMainView" class="ai-main-view">
+                        <div class="ai-status">
+                            <p><i class="fas fa-circle status-online"></i> AI-SSK är tillgänglig</p>
+                            <p><strong>Specialitet:</strong> Sjuksköterska rådgivning</p>
+                            <p><strong>Tillgänglighet:</strong> 24/7</p>
+                        </div>
+                        <div class="ai-button-container">
+                            <button onclick="startAICall()" class="btn btn-primary btn-call">
+                                <i class="fas fa-phone"></i> Ring till AI-SSK
+                            </button>
+                            <button onclick="startAIChat()" class="btn btn-secondary btn-call">
+                                <i class="fas fa-comments"></i> Chatta med AI-SSK
+                            </button>
+                        </div>
                     </div>
-                    <button onclick="callAISSK('main')" class="btn btn-primary btn-call">
-                        <i class="fas fa-phone"></i> Ring till AI-SSK
-                    </button>
+
+                    <!-- Chatt-vy -->
+                    <div id="aiChatView" class="ai-chat-view" style="display: none;">
+                        <div class="chat-container">
+                            <div class="chat-messages" id="aiChatMessages">
+                                <div class="chat-message system">
+                                    <strong>AI-SSK:</strong> Utveckling är på gång...
+                                </div>
+                            </div>
+                            <div class="chat-input-container">
+                                <input type="text" class="chat-input" id="aiChatInput" placeholder="Skriv ditt meddelande...">
+                                <button class="btn btn-primary send-btn" onclick="sendAIMessage()">
+                                    <i class="fas fa-paper-plane"></i>
+                                </button>
+                            </div>
+                            <div class="chat-footer">
+                                <button onclick="endAIChat()" class="btn btn-danger">
+                                    <i class="fas fa-times"></i> Avsluta samtalet
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Ring-vy -->
+                    <div id="aiCallView" class="ai-call-view" style="display: none;">
+                        <div class="call-container">
+                            <div class="call-animation">
+                                <div class="call-pulse"></div>
+                                <i class="fas fa-phone-alt call-icon"></i>
+                            </div>
+                            <div class="call-status">
+                                <h4>Ringer AI-SSK...</h4>
+                                <p>Utveckling är på gång</p>
+                            </div>
+                            <button onclick="endAICall()" class="btn btn-danger">
+                                <i class="fas fa-phone-slash"></i> Avsluta samtalet
+                            </button>
+                        </div>
+                    </div>
                 </div>
             </div>
 
@@ -164,31 +211,6 @@
                         </div>
                     </div>
                 </div>
-        </div>
-    </div>
-
-    <!-- Modal för AI-samtal -->
-    <div id="aiCallModal" class="modal" style="display: none;">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h3><i class="fas fa-phone"></i> Ansluter till AI-SSK...</h3>
-                <span class="modal-close" onclick="endCall()">&times;</span>
-            </div>
-            <div class="modal-body">
-                <div class="call-animation">
-                    <div class="call-pulse"></div>
-                    <i class="fas fa-robot call-icon"></i>
-                </div>
-                <p id="callStatus">Ringer AI-SSK...</p>
-                <div class="call-info">
-                    <p><strong>AI-SSK</strong> - Sjuksköterska Assistant</p>
-                    <p>Specialiserad på symptombedömning och tidsbokning</p>
-                </div>
-            </div>
-            <div class="modal-footer">
-                <button onclick="endCall()" class="btn btn-danger">
-                    <i class="fas fa-phone-slash"></i> Avsluta samtal
-                </button>
             </div>
         </div>
     </div>

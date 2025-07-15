@@ -329,3 +329,99 @@ window.addEventListener('DOMContentLoaded', async () => {
         showLoginForm();
     }
 });
+
+
+// Visa registreringsformulär
+function showRegisterForm() {
+    document.getElementById('loginForm').style.display = 'none';
+    document.getElementById('registerForm').style.display = 'block';
+    document.querySelector('.container').style.display = 'flex';
+    document.getElementById('dashboardWrapper').style.display = 'none';
+    clearMessages();
+}
+
+// Visa inloggningsformulär
+function showLoginForm() {
+    document.getElementById('loginForm').style.display = 'block';
+    document.getElementById('registerForm').style.display = 'none';
+    document.querySelector('.container').style.display = 'flex';
+    document.getElementById('dashboardWrapper').style.display = 'none';
+    clearMessages();
+}
+
+// Visa dashboard med alla kontainrar
+function showDashboard(userData) {
+    currentUser = userData;
+    document.querySelector('.container').style.display = 'none';
+    document.getElementById('dashboardWrapper').style.display = 'block';
+    
+    // Uppdatera header med användarinfo
+    const headerUserInfo = document.getElementById('headerUserInfo');
+    headerUserInfo.innerHTML = `
+        <p><strong>${userData.first_name} ${userData.last_name}</strong></p>
+        <p><i class="fas fa-user"></i> ${userData.username} | <i class="fas fa-map-marker-alt"></i> ${userData.address} | <i class="fas fa-birthday-cake"></i> ${userData.age} år</p>
+        ${userData.description ? `<p><i class="fas fa-info-circle"></i> ${userData.description}</p>` : ''}
+    `;
+    
+    // Initiera kalender
+    initializeCalendar();
+    
+    // Uppdatera status (simulerad data)
+    updateStatusInfo();
+    
+    // Säkerställ att AI-vyn är på huvudläge
+    resetAIView();
+}
+
+// AI-SSK Funktioner
+
+function startAIChat() {
+    document.getElementById('aiMainView').style.display = 'none';
+    document.getElementById('aiCallView').style.display = 'none';
+    document.getElementById('aiChatView').style.display = 'block';
+    
+    // Fokusera på input-fältet
+    document.getElementById('aiChatInput').focus();
+}
+
+function endAICall() {
+    resetAIView();
+}
+
+function endAIChat() {
+    resetAIView();
+    // Rensa chathistorik
+    const chatMessages = document.getElementById('aiChatMessages');
+    chatMessages.innerHTML = '<div class="chat-message system"><strong>AI-SSK:</strong> Utveckling är på gång...</div>';
+}
+
+function resetAIView() {
+    document.getElementById('aiMainView').style.display = 'block';
+    document.getElementById('aiChatView').style.display = 'none';
+    document.getElementById('aiCallView').style.display = 'none';
+}
+
+function sendAIMessage() {
+    const input = document.getElementById('aiChatInput');
+    const messages = document.getElementById('aiChatMessages');
+    
+    if (input.value.trim()) {
+        // Lägg till användarens meddelande
+        const userMessage = document.createElement('div');
+        userMessage.className = 'chat-message user';
+        userMessage.innerHTML = `<strong>Du:</strong> ${input.value}`;
+        messages.appendChild(userMessage);
+        
+        // Lägg till AI-svar efter kort fördröjning
+        setTimeout(() => {
+            const aiMessage = document.createElement('div');
+            aiMessage.className = 'chat-message ai';
+            aiMessage.innerHTML = `<strong>AI-SSK:</strong> Utveckling är på gång...`;
+            messages.appendChild(aiMessage);
+            messages.scrollTop = messages.scrollHeight;
+        }, 1000);
+        
+        input.value = '';
+        messages.scrollTop = messages.scrollHeight;
+    }
+}
